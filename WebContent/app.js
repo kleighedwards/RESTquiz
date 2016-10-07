@@ -76,14 +76,105 @@ var app = (function() {
 			var quizId = e.target.getAttribute("quiz_id");
 			console.log(quizId);
 			module.ajax("GET", "http://localhost:8080/Quiz/api/quizes/"
-					+ quizId, function() {
-				// do something when data comes back
-			})
-		});
+					+ quizId, function(req) {
+				// Allow User To Take Selected Quiz
+				if (req.readyState === 4 && req.status < 400) {
+					// Find Table And Create Button By Id And Remove From Dom
+					var table = document.getElementById("quizTable");
+					table.parentElement.removeChild(table);
+
+					var createButton = document.getElementById("createQuizBtn");
+					createButton.parentElement.removeChild(createButton);
+
+					var quiz = dataObj;
+
+					console.log("Printing Quiz");
+					console.log(quiz);
+
+					var name = quiz.name;
+					// Create Header With Quiz Name
+					var h1 = document.createElement("h1");
+					h1.textContent = name;
+					document.body.appendChild(h1);
+
+					console.log("Printing Questions");
+					console.log(quiz.questions);
+					var questions = quiz.questions;
+
+					var inputArray = [];
+					var userInput = null;
+					var totalScore = 0;
+					var userId = 1;
+
+					var questionForm = document.createElement("form");
+					var submitForm = document.createElement("input");
+					submitForm.setAttribute("type", "submit");
+					submitForm.addEventListener("click", function(e) {
+						var counter = 0;
+						inputArray.forEach(function(correct, value, array) {
+							if (correct === true) {
+								counter++;
+							}
+						})
+						totalScore = parseInt((counter / (inputArray.length)) * 100);
+						console.log(totalScore);
+						alert("Your Score! " + totalScore +"%");
+					})
+
+					questions.forEach(function(question, index, array) {
+						for (var variable in question) {
+							if( variable === "questionText") {
+								var questionText = document.createElement("p");
+								questionText.textContent = question[variable];
+								questionText.className = "questions";
+								document.body.appendChild(questionText);
+
+							} // Close If for questionText
+							if( variable === "answers" ) {
+								console.log("Printing Answers");
+								console.log(question[variable]);
+
+								question[variable].forEach(function(answer, index, array) {
+									console.log(answer.answerText);
+
+									var answerForm = document.createElement("form");
+									var answerOpBtns = document.createElement("input");
+									answerOpBtns.setAttribute("type", "radio");
+									answerOpBtns.id = answer.id;
+									answerOpBtns.value = answer;
+
+									var answerOptions = document.createElement("span");
+									answerOptions.textContent = answer.answerText;
+									answerOptions.className = "answers";
+
+									answerForm.appendChild(answerOpBtns);
+									answerForm.appendChild(answerOptions);
+
+									answerOpBtns.addEventListener("click", function(e) {
+										userInput = answer.correct;
+										console.log(userInput);
+										inputArray.push(userInput);
+										console.log(inputArray);
+
+										console.log(e.target);
+									})
+
+									document.body.appendChild(answerForm);
+									return
+
+								}) // Close Answers For Each
+							} // Close If Answers
+						} // Close forIn
+					}) // Close forEach
+					questionForm.appendChild(submitForm);
+					document.body.appendChild(questionForm);
+				} //Close if (req.readyState ===4 )
+			}) // Close module.ajax
+		}); //Close takeBtn.addEventListener
 
 		td.appendChild(takeBtn);
 		return td;
-	};
+	}; //Close viewBtn.addEventListener
 
 	module.makeButtonsForTableToView = function(dataObj) {
 		var td = document.createElement("td");
@@ -95,14 +186,24 @@ var app = (function() {
 			var quizId = e.target.getAttribute("quiz_id");
 			console.log(quizId);
 			module.ajax("GET", "http://localhost:8080/Quiz/api/quizes/"
-					+ quizId, function() {
-				// do something when data comes back
-			})
-		});
+					+ quizId, function(req) {
+				if (req.readyState === 4 && req.status < 400) {
+					// Find Table By Id And Remove It From Dom
+					var table = document.getElementById("quizTable");
+					table.parentElement.removeChild(table);
+
+					var createButton = document.getElementById("createQuizBtn");
+					createButton.parentElement.removeChild(createButton);
+
+
+
+				} //Close if (req.readyState ===4 )
+			}) // Close module.ajax
+		}); //Close viewBtn.addEventListener
 
 		td.appendChild(viewBtn);
 		return td;
-	};
+	}; // Close module.makeButtonsForTableToView
 
 	module.makeButtonsForTableToEdit = function(dataObj) {
 		var td = document.createElement("td");
@@ -119,8 +220,10 @@ var app = (function() {
 					// Find Table By Id And Remove It From Dom
 					var table = document.getElementById("quizTable");
 					table.parentElement.removeChild(table);
+					var createButton = document.getElementById("createQuizBtn");
+					createButton.parentElement.removeChild(createButton);
 
-					// Create A Form To Create New Quiz
+					// Create A Form To Edit Quiz
 					var editForm = document.createElement("form");
 					editForm.id = "editForm";
 
@@ -233,6 +336,8 @@ var app = (function() {
 			// Find Table By Id And Remove It From Dom
 			var table = document.getElementById("quizTable");
 			table.parentElement.removeChild(table);
+			var createButton = document.getElementById("createQuizBtn");
+			createButton.parentElement.removeChild(createButton);
 
 			// Create A Form To Create New Quiz
 			var createForm = document.createElement("form");
