@@ -118,6 +118,33 @@ var app = (function() {
 						})
 						totalScore = parseInt((counter / (inputArray.length)) * 100);
 						console.log(totalScore);
+
+
+						var obj = {
+							value : totalScore,
+							quizID : quizId
+						};
+
+						var jsonString = JSON.stringify(obj);
+
+						var newXhr = new XMLHttpRequest();
+						newXhr.open("POST", "http://localhost:8080/Quiz/api/users/"
+								+ userId + "/scores/" + quizId);
+
+						newXhr.setRequestHeader('Content-type', 'application/json');
+
+						newXhr.onreadystatechange = function() {
+							if (newXhr.readyState === 4 && newXhr.status < 400) {
+								console.log(newXhr.status);
+								console.log(newXhr.responseText);
+							}
+							if (newXhr.readyState === 4 && newXhr.status >= 400) {
+								console.error(newXhr.status + ': '
+										+ newXhr.responseText);
+							}
+						};
+						newXhr.send(jsonString);
+
 						alert("Your Score! " + totalScore +"%");
 					})
 

@@ -1,5 +1,6 @@
 package data;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import entities.Quiz;
+import entities.Score;
 import entities.User;
 
 @Transactional
@@ -70,5 +73,34 @@ public class UserDAO {
 		User deleteUser = em.find(User.class, id);
 
 		em.remove(deleteUser);
+	}
+	
+	public void createScore(Score score, int userId, int quizId) {
+		Quiz quiz = em.find(Quiz.class, quizId);
+		User user = em.find(User.class, userId);
+		
+		Score newScore = new Score();
+		
+		System.out.println(score);
+		
+		newScore.setValue(score.getValue());
+		newScore.setQuizID(quiz.getId());
+		newScore.setUser(user);
+		
+		em.persist(newScore);
+		em.flush();
+	}
+
+	public Collection<Score> getScoresForUserById(int id) {
+		User u = null;
+		try {
+			u = em.find(User.class, id);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		if (u != null) {
+			return u.getScores();
+		}
+		return null;
 	}
 }

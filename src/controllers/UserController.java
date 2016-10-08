@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import data.UserDAO;
+import entities.Score;
 import entities.User;
 
 @RestController
@@ -84,4 +86,30 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
+	
+	// Post A New Score
+	@RequestMapping(path = "users/{id}/scores/{q_id}", method = RequestMethod.POST) 
+	public void createScore(@PathVariable int id, @PathVariable int q_id,
+							@RequestBody String jsonScore) {
+		ObjectMapper mapper = new ObjectMapper();
+		Score newScore = null;
+
+		try {
+			newScore = mapper.readValue(jsonScore, Score.class);
+		} 
+		catch (Exception e) {
+			System.out.println("****************************************");
+			System.out.println("****************************************");
+			System.out.println("ERROR!!!!!!!!");
+			System.out.println("****************************************");
+			e.printStackTrace();
+		}
+		userDAO.createScore(newScore, id, q_id);
+	}
+	
+	@RequestMapping(path = "users/{id}/scores", method = RequestMethod.GET)
+	public Collection<Score> getScoresForUserById(@PathVariable("id") int id) {
+		return userDAO.getScoresForUserById(id);
+	}
+	
 }
