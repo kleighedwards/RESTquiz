@@ -222,8 +222,57 @@ var app = (function() {
 					var createButton = document.getElementById("createQuizBtn");
 					createButton.parentElement.removeChild(createButton);
 
+					var h1 = document.createElement("h1");
+					h1.textContent = dataObj.name;
+					document.body.appendChild(h1);
 
+					var userTable = document.createElement("table");
+					var userHeader = document.createElement("thead");
+					var userBody = document.createElement("tbody");
 
+					var headerRow = document.createElement("tr");
+					var username = document.createElement("th");
+					username.textContent = "Username";
+					var score = document.createElement("th");
+					score.textContent = "Score";
+
+					headerRow.appendChild(username);
+					headerRow.appendChild(score);
+					userHeader.appendChild(headerRow);
+					userTable.appendChild(userHeader);
+
+					var newXhr = new XMLHttpRequest();
+					newXhr.open("GET", "http://localhost:8080/Quiz/api/quizes/"
+					+ quizId + "/scores");
+
+					newXhr.onreadystatechange = function() {
+						if (newXhr.readyState === 4 && newXhr.status < 400) {
+							console.log(newXhr.status);
+							console.log(newXhr.responseText);
+							var scoreArr = JSON.parse(newXhr.responseText);
+
+							scoreArr.forEach(function(score, index, array) {
+								var tr = document.createElement("tr");
+								var td = document.createElement("td");
+								var td2 = document.createElement("td");
+								td.textContent = "testUser";
+								td2.textContent = score.value;
+								console.log(score);
+
+								tr.appendChild(td);
+								tr.appendChild(td2);
+								userBody.appendChild(tr);
+							})
+
+							userTable.appendChild(userBody);
+							document.body.appendChild(userTable);
+						}
+						if (newXhr.readyState === 4 && newXhr.status >= 400) {
+							console.error(newXhr.status + ': '
+									+ newXhr.responseText);
+						}
+					};
+					newXhr.send(null);
 				} //Close if (req.readyState ===4 )
 			}) // Close module.ajax
 		}); //Close viewBtn.addEventListener
