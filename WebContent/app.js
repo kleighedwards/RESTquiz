@@ -265,7 +265,23 @@ var app = (function() {
 							})
 
 							userTable.appendChild(userBody);
+
+							var backToQuizzes = document.createElement("form");
+							var backBtn = document.createElement("input");
+							backBtn.setAttribute("type", "submit");
+							backBtn.value = "Back To Quiz List";
+
+							backBtn.addEventListener("click", function(e) {
+								location.reload();
+							})
+
+							backToQuizzes.appendChild(backBtn);
+
+							var br = document.createElement("br");
+
 							document.body.appendChild(userTable);
+							document.body.appendChild(br);
+							document.body.appendChild(backToQuizzes);
 						}
 						if (newXhr.readyState === 4 && newXhr.status >= 400) {
 							console.error(newXhr.status + ': '
@@ -357,8 +373,27 @@ var app = (function() {
 							form.reset();
 							location.reload();
 						});
+				var br1 = document.createElement("br");
+				editForm.appendChild(br1);
 				editForm.appendChild(submit);
+
+				var backToQuizzes = document.createElement("form");
+				var backBtn = document.createElement("input");
+				backBtn.setAttribute("type", "submit");
+				backBtn.value = "Back To Quiz List";
+
+				backBtn.addEventListener("click", function(e) {
+					location.reload();
+				})
+
+				backToQuizzes.appendChild(backBtn);
+
+				var br = document.createElement("br");
+
 				document.body.appendChild(editForm);
+				document.body.appendChild(br);
+				document.body.appendChild(backToQuizzes);
+
 				}
 			});
 
@@ -469,9 +504,26 @@ var app = (function() {
 				form.reset();
 				location.reload();
 			});
-
+			var br1 = document.createElement("br");
+			createForm.appendChild(br1);
 			createForm.appendChild(submit);
+
+			var backToQuizzes = document.createElement("form");
+			var backBtn = document.createElement("input");
+			backBtn.setAttribute("type", "submit");
+			backBtn.value = "Back To Quiz List";
+
+			backBtn.addEventListener("click", function(e) {
+				location.reload();
+			})
+
+			backToQuizzes.appendChild(backBtn);
+
+			var br = document.createElement("br");
+
 			document.body.appendChild(createForm);
+			document.body.appendChild(br);
+			document.body.appendChild(backToQuizzes);
 
 		});
 

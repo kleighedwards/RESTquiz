@@ -44,3 +44,20 @@ form {
   font-size: 15px;
   text-align: left;
 }
+
+input[type=text] {
+    color: black;
+    width: 50%;
+    padding: 12px 15px;
+}
+
+input[type=submit] {
+    width: 30%;
+    height: 30%;
+    padding: 12px 20px;
+    font-size: 30px;
+  	font-family: sans-serif;
+  	text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
