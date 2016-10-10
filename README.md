@@ -1,8 +1,8 @@
-###Skill Distillery Week 12 Project
+#Skill Distillery Week 12 Project
 
 ##Taking Quizzes using REST API and JavaScript
 
-#Project Overview
+###Project Overview
 
 - Allow the user to take a variety of quizzes and see their score upon completion.
 
@@ -18,7 +18,7 @@
 
 - The user may also choose to create a new quiz. This option, however, only allows users to name a new quiz. There is no functionality to add questions and answers to this new quiz at this time. 
 
-#Stumbling Blocks
+###Stumbling Blocks
 
 - My code became repetitious quite quickly. I am not yet comfortable with how XMLHttpRequests work within JavaScript, so I was reluctant to break my monolithic functions into something more succinct for fear of breaking functionality. 
 
